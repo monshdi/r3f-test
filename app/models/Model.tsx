@@ -9,11 +9,21 @@ import {
   MathUtils,
   TextureLoader,
   Points,
-  BufferGeometry,
+  BufferGeometry, Vector3,
 } from 'three';
 import {useFrame, useLoader, useThree} from "@react-three/fiber";
 
-export default function Model({ points }) {
+interface PointsType {
+  x: number;
+  y: number;
+  z: number;
+}
+
+interface Props {
+  points: Vector3[]
+}
+
+export default function Model({ points }: Props) {
     const pointsRef = useRef<Points>(null!)
     const geometryRef = useRef<BufferGeometry>(null!);
 
@@ -76,7 +86,6 @@ export default function Model({ points }) {
             geometry.setAttribute('customColor', new BufferAttribute(colors, 3));
             geometry.setAttribute('size', new BufferAttribute(sizes, 1));
             geometry.setAttribute('sizeChange', new BufferAttribute(sizesChange, 3));
-            geometry.dynamic = true;
         }
     }, [])
 

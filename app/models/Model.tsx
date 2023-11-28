@@ -2,8 +2,15 @@
 import fragmentShader from '@/public/dots-fragment.glsl';
 import vertexShader from '@/public/dots-vertex.glsl';
 import {useLayoutEffect, useMemo, useRef} from "react";
-import {AdditiveBlending, BufferAttribute, Color, MathUtils, TextureLoader} from 'three';
-import { BufferGeometry, Points } from '@types/three'
+import {
+  AdditiveBlending,
+  BufferAttribute,
+  Color,
+  MathUtils,
+  TextureLoader,
+  Points,
+  BufferGeometry,
+} from 'three';
 import {useFrame, useLoader, useThree} from "@react-three/fiber";
 
 export default function Model({ points }) {

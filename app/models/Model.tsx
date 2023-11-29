@@ -21,9 +21,12 @@ interface Props {
 }
 
 const controls = {
-  value: {
+  deltaValue: {
     value: 1, min: 1, max: 4.0, step: 0.01,
-  }
+  },
+  distance: {
+    value: 1, min: 1, max: 20.0, step: 0.01,
+  },
 };
 
 const rotation = Math.PI / 2;
@@ -53,6 +56,7 @@ export default function Model({points, opacity = 1, ...restProps}: Props): React
       pointTexture: {value: texture},
       uOpacity: {value: opacity},
       distanceDelta: { value: 0 },
+      distanceValue: { value: 0 },
     },
   }), []);
   console.log(materialRef.current);
@@ -65,7 +69,8 @@ export default function Model({points, opacity = 1, ...restProps}: Props): React
     const amount = geometry.attributes.position.count;
 
     materialRef.current.uniforms.uOpacity.value = Math.abs(opacity - scroll.offset);
-    materialRef.current.uniforms.distanceDelta.value = control.value;
+    materialRef.current.uniforms.distanceDelta.value = control.deltaValue;
+    materialRef.current.uniforms.distanceValue.value = control.distance;
 
     const {min, max} = dotsSizes;
 

@@ -13,11 +13,18 @@ import {
 } from 'three';
 import { useFrame, useLoader, useThree } from "@react-three/fiber";
 import { useScroll } from "@react-three/drei";
+import { useControls } from "leva";
 
 interface Props {
   points: Vector3[]
   opacity?: number;
 }
+
+const controls = {
+  value: {
+    value: 1, min: 1, max: 4.0, step: 0.01,
+  }
+};
 
 const rotation = Math.PI / 2;
 export default function Model({points, opacity = 1, ...restProps}: Props): React.FunctionComponentElement<Props> {
@@ -25,6 +32,8 @@ export default function Model({points, opacity = 1, ...restProps}: Props): React
   const geometryRef = useRef<BufferGeometry>(null!);
   const materialRef = useRef<ShaderMaterial>(null!);
   const texture = useLoader(TextureLoader, 'spark3.png');
+
+  const control = useControls('Distance', controls)
 
   const {gl} = useThree();
   const scroll = useScroll();
@@ -43,9 +52,10 @@ export default function Model({points, opacity = 1, ...restProps}: Props): React
       color: {value: new Color(0xffffff)},
       pointTexture: {value: texture},
       uOpacity: {value: opacity},
+      distanceDelta: { value: 0 },
     },
   }), []);
-
+  console.log(materialRef.current);
   useFrame(({clock}, delta) => {
     const points = pointsRef.current;
     const geometry = geometryRef.current;
@@ -55,8 +65,7 @@ export default function Model({points, opacity = 1, ...restProps}: Props): React
     const amount = geometry.attributes.position.count;
 
     materialRef.current.uniforms.uOpacity.value = Math.abs(opacity - scroll.offset);
-    console.log(materialRef.current.uniforms.uOpacity);
-    // materialRef.current.needsUpdate = true;
+    materialRef.current.uniforms.distanceDelta.value = control.value;
 
     const {min, max} = dotsSizes;
 
@@ -87,7 +96,7 @@ export default function Model({points, opacity = 1, ...restProps}: Props): React
       const {min, max} = dotsSizes;
 
       for (let i = 0; i < pointsAmount; i++) {
-        const color = new Color(0xffff00);
+        const color = new Color(0xffffff);
         color.toArray(colors, i * 3);
         alpha[i] = Math.random();
         sizes[i] = MathUtils.randFloat(min, max);

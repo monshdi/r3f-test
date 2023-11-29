@@ -1,3 +1,6 @@
 body {
-    background: url('../public/BG.png');
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    background: radial-gradient(133.66% 141.42% at 100% 0%, #42578C 0%, rgba(0, 76, 146, 0.32) 47.24%, #5089B0 81.9%, #004C92 100%);
 }

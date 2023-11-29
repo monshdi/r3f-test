@@ -12,8 +12,8 @@ import {
   BufferGeometry, Vector3, ShaderMaterial,
 } from 'three';
 import { useFrame, useLoader, useThree } from "@react-three/fiber";
-import { useScroll } from "@react-three/drei";
 import { useControls } from "leva";
+import { useScroll } from "@react-three/drei";
 
 interface Props {
   points: Vector3[]
@@ -22,10 +22,10 @@ interface Props {
 
 const controls = {
   deltaValue: {
-    value: 1, min: 1, max: 4.0, step: 0.01,
+    value: 2.5, min: 1, max: 4.0, step: 0.01,
   },
   distance: {
-    value: 1, min: 1, max: 20.0, step: 0.001,
+    value: 3, min: 1, max: 20.0, step: 0.001,
   },
 };
 
@@ -34,11 +34,12 @@ export default function Model({points, opacity = 1, ...restProps}: Props): React
   const pointsRef = useRef<Points>(null!)
   const geometryRef = useRef<BufferGeometry>(null!);
   const materialRef = useRef<ShaderMaterial>(null!);
+  const cameraPositionRef = useRef<number>(0);
   const texture = useLoader(TextureLoader, 'spark3.png');
 
   const control = useControls('Distance', controls)
 
-  const {gl} = useThree();
+  const {gl, camera} = useThree();
   const scroll = useScroll();
 
   const dotsSizes = useMemo(() => {
@@ -60,7 +61,7 @@ export default function Model({points, opacity = 1, ...restProps}: Props): React
     },
   }), []);
 
-  useFrame(({clock}, delta) => {
+  useFrame((_, delta) => {
     const points = pointsRef.current;
     const geometry = geometryRef.current;
     points.rotation.z += delta / 50;
@@ -71,6 +72,7 @@ export default function Model({points, opacity = 1, ...restProps}: Props): React
     materialRef.current.uniforms.uOpacity.value = Math.abs(opacity - scroll.offset);
     materialRef.current.uniforms.distanceDelta.value = control.deltaValue;
     materialRef.current.uniforms.distanceValue.value = control.distance;
+    camera.position.z = 3 - scroll.offset;
 
     const {min, max} = dotsSizes;
 
@@ -113,10 +115,14 @@ export default function Model({points, opacity = 1, ...restProps}: Props): React
       geometry.setAttribute('size', new BufferAttribute(sizes, 1));
       geometry.setAttribute('sizeChange', new BufferAttribute(sizesChange, 3));
     }
+
+    console.log(camera);
+    cameraPositionRef.current = camera.position.z;
   }, [])
 
   return (
     <points
+      scale={0.5}
       ref={pointsRef}
       {...restProps}
     >
@@ -132,10 +138,5 @@ export default function Model({points, opacity = 1, ...restProps}: Props): React
         depthWrite={false}
       />
     </points>
-    // <primitive object={fbx} scale={0.02} position-y={-2} />
-    // <mesh ref={ref} scale={3}>
-    //   <boxGeometry />
-    //   <meshBasicMaterial color="red" />
-    // </mesh>
   )
 }

@@ -9,8 +9,8 @@ export default function DNA({...rest}) {
   return (
       <Model
         points={points as Vector3[]}
-        position-z={-4}
-        position-y={1.5}
+        // position-z={-4}
+        // position-y={1.5}
         opacity={0}
         rotation-x={rotationX}
         rotation-y={rotationY}

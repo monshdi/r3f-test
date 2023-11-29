@@ -1,7 +1,7 @@
 'use client';
 
 import React from "react";
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useThree } from "@react-three/fiber";
 import s from './MainCanvas.module.scss';
 import { OrbitControls, Scroll, ScrollControls } from "@react-three/drei";
 
@@ -18,7 +18,7 @@ export default function MainCanvas({ children }: {children: React.ReactNode}) {
             {children}
           </Scroll>
         </ScrollControls>
-        <OrbitControls />
+        {/*<OrbitControls />*/}
       </Canvas>
     </div>
   )

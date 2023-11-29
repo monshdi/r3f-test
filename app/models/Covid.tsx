@@ -9,7 +9,7 @@ export default function Covid() {
   return (
     <Model
       points={flated as Vector3[]}
-      position-y={1}
+      // position-y={1}
       rotation-x={rotation}
     />
   )

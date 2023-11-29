@@ -25,7 +25,7 @@ const controls = {
     value: 1, min: 1, max: 4.0, step: 0.01,
   },
   distance: {
-    value: 1, min: 1, max: 20.0, step: 0.01,
+    value: 1, min: 1, max: 20.0, step: 0.001,
   },
 };
 
@@ -59,7 +59,7 @@ export default function Model({points, opacity = 1, ...restProps}: Props): React
       distanceValue: { value: 0 },
     },
   }), []);
-  console.log(materialRef.current);
+
   useFrame(({clock}, delta) => {
     const points = pointsRef.current;
     const geometry = geometryRef.current;
@@ -118,9 +118,6 @@ export default function Model({points, opacity = 1, ...restProps}: Props): React
   return (
     <points
       ref={pointsRef}
-      position-x={-2}
-      rotation-x={rotation}
-      scale={2.5}
       {...restProps}
     >
       <bufferGeometry

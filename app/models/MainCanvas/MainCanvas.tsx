@@ -18,6 +18,7 @@ export default function MainCanvas({ children }: {children: React.ReactNode}) {
             {children}
           </Scroll>
         </ScrollControls>
+        <OrbitControls />
       </Canvas>
     </div>
   )

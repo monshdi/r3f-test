@@ -14,7 +14,7 @@ export default function MainScene({ children }: { children: ReactNode }) {
 
   // const { actions } = useAnimations(animations, groupRef);
 
-  let raf;
+  let raf: () => void | null = null;
 
   useEffect(() => {
     let startTime: number | null = null;

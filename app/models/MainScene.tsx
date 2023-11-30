@@ -14,18 +14,19 @@ export default function MainScene({ children }: { children: ReactNode }) {
 
   // const { actions } = useAnimations(animations, groupRef);
 
+  let raf;
+
   useEffect(() => {
     let startTime: number | null = null;
     const animation = (time: number) => {
       if(!startTime) startTime = time;
       const progress = Math.min((time - startTime) / 1000, 1);
       cameraRef.current.position.x = progress * (0.5 - 2) + 2
-      console.log(progress)
 
       if (progress >= 1) {
-        window.cancelAnimationFrame(animation)
+        window.cancelAnimationFrame(raf)
       } else {
-        window.requestAnimationFrame(animation);
+        raf = window.requestAnimationFrame(animation);
       }
     }
 

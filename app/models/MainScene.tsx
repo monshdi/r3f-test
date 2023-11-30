@@ -30,7 +30,7 @@ export default function MainScene({ children }: { children: ReactNode }) {
       }
     }
 
-    animation();
+    raf = window.requestAnimationFrame(animation);
     // console.log(actions['animation_0']?.getClip());
     // actions['animation_0']?.play();
   }, []);
